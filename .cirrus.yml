@@ -1,0 +1,29 @@
+task:
+  matrix:
+    - name: "FreeBSD 13.1"
+      freebsd_instance:
+        image_family: freebsd-13-1
+    - name: "FreeBSD 12.3"
+      freebsd_instance:
+        image_family: freebsd-12-3
+  script:
+    - pkg update
+    - pkg upgrade -y
+    - pkg install -y wget bison gdbm libffi libyaml openssl readline bash
+
+    - wget -O ruby-install-0.8.3.tar.gz https://github.com/postmodern/ruby-install/archive/v0.8.3.tar.gz
+    - tar -xzvf ruby-install-0.8.3.tar.gz
+    - cd ruby-install-0.8.3
+    - sudo make install
+    - ruby-install 3.1.2
+
+    - cd ..
+
+    - wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
+    - tar -xzvf chruby-0.3.9.tar.gz
+    - cd chruby-0.3.9
+    - sudo make install
+    - echo $SHELL
+    - ls /usr/local/share/chruby
+    - chruby 3.1.2
+    - ruby --version
